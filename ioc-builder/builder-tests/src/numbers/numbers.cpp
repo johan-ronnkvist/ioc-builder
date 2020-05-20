@@ -1,5 +1,5 @@
 #include "gtest/gtest.h"
-#include "sample-lib/library.h"
+#include "builder-lib/builder.h"
 
 TEST(fibbonaci, compile_time_calculation) {
 	static_assert(sample::fibbonaci<7>() == 13, "calculations should be possible at compile-time");
