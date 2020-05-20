@@ -1,0 +1,47 @@
+name: linux
+on: [push]
+env:
+  BUILD_TYPE: Release
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v1
+      with: 
+        fetch-depth: 1
+        
+    - name: Create build directory
+      run: cmake -E make_directory ${{runner.workspace}}/build
+
+    - name: Install conan
+      run: |
+        sudo apt-get install python3-setuptools
+        sudo pip3 install wheel
+        sudo pip3 install conan_package_tools
+        sudo pip3 install conan
+      shell: bash
+
+    - name: Install dependencies
+      run: | 
+        sudo apt-get update --ignore-missing
+        sudo apt-get install libx11-dev xorg-dev freeglut3-dev libudev-dev
+      shell: bash
+
+    - name: Generate project
+      working-directory: ${{runner.workspace}}/build
+      run: cmake $GITHUB_WORKSPACE -DCMAKE_BUILD_TYPE=$BUILD_TYPE -DENABLE_COVERAGE=ON -DCMAKE_CXX_COMPILER=g++-9 -DCMAKE_C_COMPILER=gcc-9
+      shell: bash
+
+    - name: Build project
+      working-directory: ${{runner.workspace}}/build
+      run: cmake --build . --config $BUILD_TYPE
+      shell: bash
+
+    - name: Run unit tests
+      working-directory: ${{runner.workspace}}/build
+      run: ctest -C $BUILD_TYPE
+      shell: bash
+        

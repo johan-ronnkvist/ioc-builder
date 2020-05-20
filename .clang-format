@@ -1,0 +1,12 @@
+﻿AllowShortFunctionsOnASingleLine: Empty
+BasedOnStyle: Chromium
+BinPackArguments: false
+BinPackParameters: false
+BreakConstructorInitializers: BeforeComma 
+ConstructorInitializerAllOnOneLineOrOnePerLine: false
+ColumnLimit: 130
+AccessModifierOffset: '-4'
+IndentWidth: '4'
+Language: Cpp
+TabWidth: '4'
+UseTab: Always

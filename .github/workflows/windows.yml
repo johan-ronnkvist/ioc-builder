@@ -1,0 +1,35 @@
+name: windows
+on: [push]
+env:
+  BUILD_TYPE: Release
+
+jobs:
+  build:
+    runs-on: windows-latest
+
+    steps:
+    - name: Install Conan
+      run: pip install conan
+
+    - name: Checkout repository
+      uses: actions/checkout@v1
+      with: 
+        fetch-depth: 1
+        
+    - name: Create build directory
+      run: cmake -E make_directory ${{runner.workspace}}/build
+
+    - name: Generate project
+      working-directory: ${{runner.workspace}}/build
+      run: cmake $GITHUB_WORKSPACE -DCMAKE_BUILD_TYPE=$BUILD_TYPE
+      shell: bash
+
+    - name: Build project
+      working-directory: ${{runner.workspace}}/build
+      run: cmake --build . --config $BUILD_TYPE
+      shell: bash
+
+    - name: Run unit tests
+      working-directory: ${{runner.workspace}}/build
+      run: ctest -C $BUILD_TYPE
+      shell: bash
