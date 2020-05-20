@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 3.11)
-project("project_name" C CXX)
+project("ioc-builder" C CXX)
 
 set_property(GLOBAL PROPERTY USE_FOLDERS ON)
 set_property(GLOBAL PROPERTY PREDEFINED_TARGETS_FOLDER "predefined")
@@ -14,4 +14,4 @@ include("cmake/sanitizers.cmake")
 add_conan_package("gtest/1.8.1@bincrafters/stable")
 run_conan()
 
-add_subdirectory("project_name")
+add_subdirectory("ioc-builder")
