@@ -3,17 +3,17 @@ set(target_name "builder-tests")
 set(src_precompiled
 	"src/precompiled.h")
 
-set(src_numbers
-	"src/numbers/numbers.cpp")
+set(src_builder
+	"src/builder/module_manager.cpp")
 
 set(src_files 
 	${src_precompiled}
-	${src_numbers})
+	${src_builder})
 
 add_executable(${target_name} ${src_files} ${res_files})
 
 source_group("src\\precompiled" FILES ${src_precompiled})
-source_group("src\\numbers" FILES ${src_numbers})
+source_group("src\\builder" FILES ${src_builder})
 source_group("res" FILES ${res_files})
 
 target_link_libraries(${target_name} CONAN_PKG::gtest)

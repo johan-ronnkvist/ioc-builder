@@ -1,9 +1,5 @@
-#include "builder-lib/builder.h"
+#include "builder-lib/ioc-builder.h"
 
 int main(int /*argc*/, char** /*argv*/) {
-	if (sample::fibbonaci<7>() != 13) {
-		return 1;
-	} else {
-		return 0;	
-	}
+	return 0;	
 }
