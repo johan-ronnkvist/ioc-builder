@@ -6,6 +6,12 @@ set(src_precompiled
 set(src_main
     "src/main.cpp")
 
+set(src_modules
+	"src/modules/base.h"
+	"src/modules/network.h"
+	"src/modules/tracking.h"
+	"src/modules/store.h")
+
 set(res_textures
 	"res/textures/default.png")
 
@@ -15,12 +21,14 @@ set(res_files
 set(src_files
     ${src_precompiled}
 	${src_main}
+	${src_modules}
 	${res_files})
 
 add_executable(${target_name} ${src_files})
 
 source_group("src\\precompiled" FILES ${src_precompiled})
 source_group("src\\main" FILES ${src_main})
+source_group("src\\modules" FILES ${src_modules})
 source_group("res\\textures" FILES ${res_textures})
 
 target_link_libraries(${target_name} PUBLIC "compiler_warnings")

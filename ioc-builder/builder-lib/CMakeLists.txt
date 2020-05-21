@@ -10,24 +10,19 @@ set(src_dummy
 	"src/dummy.cpp")
 
 set(src_library
-	"src/library/module_manager.h")
-
-set(src_modules
-	"src/modules/test_modules.h")
+	"src/library/builder.h")
 
 set(src_files
     ${src_precompiled}
 	${src_dummy}
 	${src_library}
-	${src_modules}
 	${src_include})
 
 add_library(${target_name} STATIC ${src_files})
 
 source_group("src\\precompiled" FILES ${src_precompiled})
 source_group("src\\include" FILES ${src_include})
-source_group("src\\library" FILES ${src_library})
-source_group("src\\modules" FILES ${src_modules})
+source_group("src\\builder" FILES ${src_library})
 source_group("src\\dummy" FILES ${src_dummy})
 
 target_link_libraries(${target_name} PUBLIC "compiler_warnings")

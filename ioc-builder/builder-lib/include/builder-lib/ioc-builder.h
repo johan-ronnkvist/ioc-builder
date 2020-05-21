@@ -2,5 +2,4 @@
 #include <cstddef>
 #include <cstdint>
 
-#include "../../src/library/module_manager.h"
-#include "../../src/modules/test_modules.h"
+#include "../../src/library/builder.h"
