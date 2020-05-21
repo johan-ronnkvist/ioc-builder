@@ -1,13 +1,34 @@
 #include "builder-lib/ioc-builder.h"
 #include "gtest/gtest.h"
 
-struct test_module {};
-struct test_module_1 : public test_module {};
-struct test_module_2 : public test_module {};
-struct test_module_3 : public test_module {};
+struct module_base {
+	module_base() = default;
+	module_base(const module_base& other) = delete;
+	module_base(module_base&& other) = delete;
+	module_base& operator=(const module_base& other) = delete;
+	module_base& operator=(module_base&& other) = delete;
+};
+struct test_module_1 : public module_base {};
+struct test_module_2 : public module_base {};
+struct test_module_3 : public module_base {};
 
 using namespace ioc;
-using test_manager = module_manager<test_module>;
+using test_manager = module_manager<module_base>;
+
+struct network_module : public module_base {};
+struct tracking_module : public module_base {
+	tracking_module(network_module& network)
+		: m_network(network) {}
+	network_module& m_network;
+};
+
+struct store_module : public module_base {
+	store_module(network_module& network, tracking_module& tracking)
+		: m_network(network)
+		, m_tracking(tracking) {}
+	network_module& m_network;
+	tracking_module& m_tracking;
+};
 
 TEST(module_manager, register_module) {
 	test_manager manager;
@@ -27,7 +48,7 @@ TEST(module_manager, insert_module) {
 	EXPECT_TRUE(manager.is_registered<test_module_1>());
 }
 
-struct numeric_module : public test_module {
+struct numeric_module : public module_base {
 	explicit numeric_module(int number)
 		: m_number(number) {}
 	int m_number;
@@ -57,7 +78,7 @@ TEST(module_manager, visit) {
 	test_manager manager;
 	manager.register_module<test_module_1>();
 	manager.register_module<test_module_2>();
-	manager.visit([](test_module&) {});
+	manager.visit([](module_base&) {});
 }
 
 TEST(module_manager, load_single) {
@@ -99,4 +120,11 @@ TEST(module_manager, unload_unregistered) {
 	} catch (const std::domain_error& error) {
 		EXPECT_EQ(error.what(), std::string("module not registered"));
 	}
+}
+
+TEST(module_manager, load_dependency) {
+	test_manager manager;
+	manager.insert_module<network_module>();
+	manager.insert_module<tracking_module>(test_manager::dependency<network_module>{});
+	manager.insert_module<store_module>(test_manager::dependency<network_module>{}, test_manager::dependency<tracking_module>{});
 }

@@ -8,10 +8,13 @@
 namespace ioc {
 template <class module_base_t>
 struct module_manager {
+	template <class object_t>
+	struct dependency {};
+
 	template <class module_t, class alias_t = module_t, class... arg_t>
 	void register_module(arg_t&&... args) {
-		m_registry[typeid(alias_t)] = [args...]() {
-			return module_entry{std::make_unique<module_t>(std::forward<arg_t>(args)...)};
+		m_registry[typeid(alias_t)] = [this, args...]() {
+			return module_entry{std::make_unique<module_t>(resolve(args)...)};
 		};
 	}
 
@@ -54,6 +57,26 @@ struct module_manager {
 	template <class functor_t>
 	void visit(functor_t&& func) {
 		std::for_each(m_modules.begin(), m_modules.end(), [&func](auto& entry) { func(*entry.second.m_module); });
+	}
+
+	template <class object_t>
+	object_t& resolve(const object_t& object) {
+		return object;
+	}
+
+	template <class object_t>
+	object_t& resolve(const dependency<object_t>&) {
+		return get<object_t>();
+	}
+
+	template <class object_t>
+	object_t resolve(object_t&& object) {
+		return object;
+	}
+
+	template <class object_t>
+	object_t& resolve(dependency<object_t>&&) {
+		return get<object_t>();
 	}
 
 private:
