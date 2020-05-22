@@ -6,7 +6,15 @@
 #include <typeindex>
 
 namespace ioc {
-template <class object_base_t>
+struct object {
+	object() = default;
+	virtual ~object() = default;
+	object(const object& other) = delete;
+	object(object&& other) = delete;
+	object& operator=(const object& other) = delete;
+	object& operator=(object&& other) = delete;
+};
+
 struct builder {
 	template <class object_t>
 	struct dependency {};
@@ -119,7 +127,7 @@ private:
 	}
 
 	struct entry {
-		std::unique_ptr<object_base_t> m_module;
+		std::unique_ptr<object> m_module;
 	};
 
 	std::map<std::type_index, std::function<entry()>> m_registry;

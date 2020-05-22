@@ -6,7 +6,7 @@ struct message {
 	std::string m_data;
 };
 
-struct module : public sample::module_base {
+struct module : public ioc::object {
 	virtual ~module() = default;
 	virtual void track_data(const message& msg) = 0;
 };
@@ -25,8 +25,8 @@ struct module : public tracking::module {
 	}
 
 private:
-	std::string m_server_url;
 	sample::network::module& m_network;
+	std::string m_server_url;
 };
 }  // namespace mock
 }  // namespace sample::tracking

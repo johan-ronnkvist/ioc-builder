@@ -13,10 +13,9 @@ int main(int /*argc*/, char** /*argv*/) {
 		builder::dependency<network::module>{},
 		builder::dependency<tracking::module>{},
 		"mock.store.url",
-		[](const store::product_id&) { /* log product purchase */ });
+		[](const store::product_id&) { /* add product to invenctory */ });
 
-	auto& store = module_builder.get<network::module>();
-	//store.attempt_purchase({"sample.product"});
-
+	auto& store = module_builder.get<store::module>();
+	store.attempt_purchase({"sample.product"});
 	return 0;
 }

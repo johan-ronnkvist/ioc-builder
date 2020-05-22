@@ -4,7 +4,7 @@ set(src_precompiled
 	"src/precompiled.h")
 
 set(src_builder
-	"src/builder/module_manager.cpp")
+	"src/builder/builder.cpp")
 
 set(src_files 
 	${src_precompiled}

@@ -9,7 +9,7 @@ namespace result {
 
 using response = std::variant<result::success, result::failure>;
 
-struct module : public module_base {
+struct module : public ioc::object {
 	virtual ~module() = default;
 	virtual response post(std::string url, std::string data, uint16_t port = 80) = 0;
 };

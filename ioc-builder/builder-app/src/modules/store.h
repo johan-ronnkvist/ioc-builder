@@ -7,7 +7,7 @@ struct product_id {
 	std::string m_identifier;
 };
 
-struct module : public module_base {
+struct module : public ioc::object {
 	virtual ~module() = default;
 	virtual void attempt_purchase(product_id product) = 0;
 };

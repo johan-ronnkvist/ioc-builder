@@ -1,15 +1,8 @@
 #include "builder-lib/ioc-builder.h"
 #include "gtest/gtest.h"
 
-struct base_t {
-	base_t() = default;
-	base_t(const base_t& other) = delete;
-	base_t(base_t&& other) = delete;
-	base_t& operator=(const base_t& other) = delete;
-	base_t& operator=(base_t&& other) = delete;
-};
-
-using test_builder = ioc::builder<base_t>;
+using base_t = ioc::object;
+using test_builder = ioc::builder;
 
 struct logging_module : public base_t {};
 struct network_module : public base_t {};
